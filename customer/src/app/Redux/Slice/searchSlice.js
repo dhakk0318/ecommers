@@ -14,7 +14,7 @@ const searchSlice = createSlice({
   name: 'search',
   initialState: {
     subcategories: [],
-    status: 'idle', // idle, loading, succeeded, failed
+    status: 'idle', 
     error: null
   },
   reducers: {

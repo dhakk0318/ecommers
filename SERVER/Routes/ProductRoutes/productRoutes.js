@@ -6,10 +6,10 @@ const { authenticate } = require("../../Middlewares/AuthMiddleware");
 
 
  router.post('/',  productController.createProduct);
-
+ 
  router.get('/:pid', productController.getProductById);
 
-  
+    
 
  router.get('/', productController.getAllProducts);
   
@@ -19,8 +19,8 @@ router.get('/categories/subcategories',  productController.getCategoriesWithSubc
 
  
 router.patch('/:pid', productController.updateProduct);
- 
+  
 module.exports = router;
 
-
+ 
  

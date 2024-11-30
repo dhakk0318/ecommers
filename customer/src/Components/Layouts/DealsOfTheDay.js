@@ -1,43 +1,62 @@
 import React, { useState, useEffect } from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { useDispatch } from 'react-redux';
+import { addItemToCart } from '../../app/Redux/Action/cartActions'; // Assuming you have this Redux action
 
 function DealsOfTheDay() {
   const deals = [
     {
       name: 'Smartphone Sale',
       image: 'https://images.unsplash.com/photo-1724341039339-036842055cae?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+      pid: '1',
+      price: 20000,
     },
     {
       name: 'Fashion Discounts',
       image: 'https://images.unsplash.com/photo-1526178613552-2b45c6c302f0?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+      pid: '2',
+      price: 1500,
     },
     {
       name: 'Home Appliances',
       image: 'https://images.unsplash.com/photo-1537726235470-8504e3beef77?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+      pid: '3',
+      price: 8000,
     },
     {
       name: 'Books at 50% Off',
       image: 'https://images.unsplash.com/photo-1672309558498-cfcc89afff25?q=80&w=1935&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+      pid: '4',
+      price: 500,
     },
     {
       name: 'Beauty Products',
       image: 'https://images.unsplash.com/photo-1527632911563-ee5b6d53465b?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+      pid: '5',
+      price: 1200,
     },
     {
       name: 'Toys for Kids',
       image: 'https://images.unsplash.com/photo-1599623560574-39d485900c95?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+      pid: '6',
+      price: 700,
     },
     {
       name: 'Fitness Gear',
       image: 'https://media.istockphoto.com/id/1362684836/photo/a-happy-sporty-couple-doing-exercises-for-biceps-with-barbells-in-a-gym-and-making-eye.webp?a=1&b=1&s=612x612&w=0&k=20&c=pFpd6VODK5ZgTINaITNzGTtApTcx2naeCpDMxF83DcE=',
+      pid: '7',
+      price: 3000,
     },
     {
       name: 'Groceries & Essentials',
       image: 'https://images.unsplash.com/photo-1709234549991-2afdbad0fb0d?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+      pid: '8',
+      price: 1500,
     },
   ];
 
   const [currentSlide, setCurrentSlide] = useState(0);
+  const dispatch = useDispatch();
 
   // Auto-rotate slides every 4 seconds
   useEffect(() => {
@@ -57,6 +76,17 @@ function DealsOfTheDay() {
   };
 
   const dealChunks = chunkDeals(deals, 4); // Group 4 deals per slide
+
+  const handleAddToCart = (deal) => {
+    dispatch(
+      addItemToCart({
+        pid: deal.pid,
+        productname: deal.name,
+        price: deal.price,
+        quantity: 1,
+      })
+    );
+  };
 
   return (
     <section className="container mx-auto py-12 px-4 mt-10">
@@ -79,9 +109,20 @@ function DealsOfTheDay() {
                   </div>
                   <div className="p-4">
                     <h3 className="text-lg font-semibold">{deal.name}</h3>
-                    <button className="bg-yellow-400 text-gray-900 px-4 py-2 rounded-full mt-2 font-semibold hover:bg-yellow-500 transition">
-                      Shop Now
-                    </button>
+                    <div className="flex justify-between items-center mt-2">
+                      <button
+                        onClick={() => handleAddToCart(deal)}
+                        className="bg-yellow-400 text-gray-900 px-4 py-2 rounded-full font-semibold hover:bg-yellow-500 transition"
+                      >
+                        Shop Now
+                      </button>
+                      <button
+                        onClick={() => alert(`Viewing details of ${deal.name}`)} // Replace with actual view functionality
+                        className="bg-gray-200 text-gray-900 px-4 py-2 rounded-full font-semibold hover:bg-gray-300 transition"
+                      >
+                        View
+                      </button>
+                    </div>
                   </div>
                 </div>
               ))}

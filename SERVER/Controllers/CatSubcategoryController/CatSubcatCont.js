@@ -1,4 +1,3 @@
-// 
 const categoryModel = require('../../Model/Category&Subcategory/categoryModel');
 const subCategoryModel = require('../../Model/Category&Subcategory/subCategoryModel');
 const { validateCategory, validateSubCategory } = require('../Validation');

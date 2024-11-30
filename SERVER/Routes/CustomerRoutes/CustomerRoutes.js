@@ -10,6 +10,8 @@ router.get('/protected', verifyToken, (req, res) => {
 
   res.json({ cid: req.cid, customer_name: req.customer_name });
 });
+// Refresh token route
+// router.post('/refresh-token', customerController.refreshToken);
 
 // Public route for getting customer by ID
 router.get('/:cid', customerController.getCustomerById);

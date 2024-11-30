@@ -1,37 +1,37 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { useTheme } from '../ThemeContext'; // Import the theme hook
+import { useTheme } from '../ThemeContext';  
 
 const CreateProduct = () => {
-  const { isDarkMode } = useTheme(); // Get the current theme
+  const { isDarkMode } = useTheme();  
 
-  const [categories, setCategories] = useState([]); // State to store categories
-  const [subCategories, setSubCategories] = useState([]); // State to store subcategories
+  const [categories, setCategories] = useState([]);  
+  const [subCategories, setSubCategories] = useState([]);  
   const [productData, setProductData] = useState({
-    sub_catid: '',    // Subcategory ID
-    retid: '',        // Retailer ID
-    pid: '',          // Product ID
-    productname: '',  // Product name
-    price: '',        // Product price
-    qty: '',          // Product quantity
-    company: '',      // Company
-    product_description: '',  // Description
-    tags: '',         // Tags
-    url: '',          // URL (for product URL)
-    review: '',       // Review
-    image: null,      // Product image
-    category: '',     // Selected category
+    sub_catid: '',    
+    retid: '',         
+    pid: '',          
+    productname: '',   
+    price: '',        
+    qty: '',           
+    company: '',       
+    product_description: '',  
+    tags: '',          
+    url: '',           
+    review: '',        
+    image: null,      
+    category: '',     
   });
 
   const [message, setMessage] = useState('');
 
-  // Fetch categories and subcategories from API
+   
   useEffect(() => {
     async function fetchCategoriesAndSubCategories() {
       try {
         const { data } = await axios.get("http://localhost:3000/api/product/categories/subcategories");
         if (data && Array.isArray(data.categories)) {
-          setCategories(data.categories); // Update categories state
+          setCategories(data.categories);  
         } else {
           console.error("Invalid data structure:", data);
         }
@@ -42,27 +42,26 @@ const CreateProduct = () => {
     fetchCategoriesAndSubCategories();
   }, []);
 
-  // Handle category change
-  const handleCategoryChange = (e) => {
+   const handleCategoryChange = (e) => {
     const selectedCategoryId = e.target.value;
     const selectedCategory = categories.find((cat) => cat.catid === selectedCategoryId);
 
     if (selectedCategory) {
-      setSubCategories(selectedCategory.subcategories); // Update subcategories based on selected category
+      setSubCategories(selectedCategory.subcategories);   
       setProductData({
         ...productData,
-        category: selectedCategoryId,  // Store the selected category id
-        sub_catid: "",  // Reset subcategory when category is changed
+        category: selectedCategoryId,   
+        sub_catid: "",   
       });
     }
   };
 
-  // Handle subcategory change
+   
   const handleSubCategoryChange = (e) => {
     const selectedSubCategoryId = e.target.value;
     setProductData({
       ...productData,
-      sub_catid: selectedSubCategoryId,  // Update the subcategory when changed
+      sub_catid: selectedSubCategoryId,   
     });
   };
 
@@ -78,15 +77,14 @@ const CreateProduct = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Check if 'pid' is missing or invalid
+     
     if (!productData.pid) {
       console.error("Error: 'pid' is missing or invalid", productData.pid);
       setMessage("Product ID (pid) is required.");
       return;
     }
 
-    // Additional required fields check
-    const requiredFields = ['sub_catid', 'pid', 'retid', 'productname', 'price', 'qty', 'company', 'product_description'];
+     const requiredFields = ['sub_catid', 'pid', 'retid', 'productname', 'price', 'qty', 'company', 'product_description'];
     let missingFields = [];
     requiredFields.forEach((field) => {
       if (!productData[field]) {
@@ -100,9 +98,7 @@ const CreateProduct = () => {
       return;
     }
 
-    console.log("Submitting productData:", productData);  // Log product data for debugging
-
-    // Use JSON for POST data
+    console.log("Submitting productData:", productData);   
     try {
       const response = await axios.post('http://localhost:3000/api/product', productData, {
         headers: {
@@ -114,8 +110,8 @@ const CreateProduct = () => {
       setProductData({
         sub_catid: '', retid: '', pid: '', productname: '', price: '', qty: '', company: '', product_description: '', tags: '', url: '', review: '', image: null, category: '',
       });
-      setCategories([]);  // Reset categories
-      setSubCategories([]);  // Reset subcategories
+      setCategories([]);   
+      setSubCategories([]);   
     } catch (err) {
       console.error('Product creation error:', err.response ? err.response.data : err.message);
       setMessage('Failed to create product. Please try again.');

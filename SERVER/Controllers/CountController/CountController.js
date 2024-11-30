@@ -59,11 +59,61 @@ const getRetailerCount = (req, res) => {
     });
 };
 
+
+const getCartItemCount = async (req, res) => {
+    try {
+        const customerId = req.cid; // The customer ID from the decoded token via middleware
+
+        // Debugging: Print the customer ID received
+        console.log('Decoded Customer ID:', customerId);
+
+        if (!customerId) {
+            // If CID is not found, return a 400 error
+            return res.status(400).json({ message: "Customer ID not found in the request." });
+        }
+
+        // SQL query to count items in the cart for the given CID
+        const query = `
+            SELECT COUNT(*) AS item_count
+            FROM tbl_cart_items
+            JOIN tbl_cart ON tbl_cart.cart_id = tbl_cart_items.cart_id
+            WHERE tbl_cart.cid = ?;
+        `;
+
+        // Execute the query
+        db.query(query, [customerId], (err, results) => {
+            if (err) {
+                // Log the error if any
+                console.error("Database error:", err);
+                return res.status(500).json({ message: "Internal server error", error: err });
+            }
+
+            // Debugging: Print query results
+            console.log("Query Results:", results);
+
+            // Check if items are found
+            if (results.length === 0 || results[0].item_count === 0) {
+                return res.status(404).json({ message: "No items found in this cart." });
+            }
+
+            // Return the count as a response
+            res.status(200).json({ item_count: results[0].item_count });
+        });
+    } catch (error) {
+        // Catch unexpected errors
+        console.error("Error in getCartItemCount:", error);
+        res.status(500).json({ message: "Error fetching cart item count", error });
+    }
+};
+
+
+  
 // Exporting controller functions
 module.exports = {
     getAdminUserCount,
     getCategoryCount,
     getSubCategoryCount,
     getRetailerProductCount,
-    getRetailerCount
+    getRetailerCount,
+    getCartItemCount
 };

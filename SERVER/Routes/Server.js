@@ -11,23 +11,31 @@ const catSubcatRoutes = require("./CategorySubcategoryRoutes/catSubcatRoutes");
 
 ////Retailer
 
-const retailerProductRoutes = require("./RetailProRegRoutes/RetailProductRoutes");
 const retailerProductDescriptionRoutes = require("./RetailProRegRoutes/RetailerProductDescriptionRoutes");
 const retailerRegistrationRoutes = require("./RetailProRegRoutes/RetailerRegistrationRoutes");
-const retailerBankingRoutes = require('./RetailProRegRoutes/retailerBankingRoutes');
+const retailerBankingRoutes = require("./RetailProRegRoutes/retailerBankingRoutes");
 
 //Products
-const productRoutes = require('./ProductRoutes/productRoutes');
+const productRoutes = require("./ProductRoutes/productRoutes");
 
 //Count
-const countRoutes = require("./CountRoutes/CountRoutes")
+const countRoutes = require("./CountRoutes/CountRoutes");
 
 //AdminOffer
-const offerRoutes = require('./AdminOfferRoutes/OfferRoutes');
+const offerRoutes = require("./AdminOfferRoutes/OfferRoutes");
 
 //Customer
-const CustomerRoutes = require('./CustomerRoutes/CustomerRoutes');
+const CustomerRoutes = require("./CustomerRoutes/CustomerRoutes");
+const CustomerProfileRoutes = require("./CustomerRoutes/CustomerProfileRoutes");
 
+//Cart
+const cartRoutes = require("./CartRoutes/CartRoutes");
+
+//Order
+const orderRoutes = require("./OrderRoutes/OrderRoutes");
+
+//Transaction
+const transactionRoutes = require("./OrderRoutes/TransactionRoutes");
 
 //Admin
 router.use("/", AdminRoutes);
@@ -37,22 +45,31 @@ router.use("/profiles", AdminUserProfileRoutes);
 router.use("/", catSubcatRoutes);
 
 //Retailer
-router.use("/products", retailerProductRoutes);
 router.use("/descriptions", retailerProductDescriptionRoutes);
 router.use("/retailers", retailerRegistrationRoutes);
 router.use("/retailer_banking", retailerBankingRoutes);
 
 //Products
-router.use("/product",productRoutes )
-
+router.use("/product", productRoutes);
 
 //Count
 router.use("/count", countRoutes);
 
 //AdminOffer
-router.use('/offers', offerRoutes);
-
+router.use("/offers", offerRoutes);
 
 //Customer
-router.use('/customers', CustomerRoutes);
+router.use("/customers", CustomerRoutes);
+
+router.use("/customer", CustomerProfileRoutes);
+
+//Cart
+router.use("/cart", cartRoutes);
+
+//Order
+router.use("/orders", orderRoutes);
+
+//Transaction
+router.use("/transactions", transactionRoutes);
+
 module.exports = router;

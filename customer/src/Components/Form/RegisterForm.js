@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { createCustomer } from "../../Redux/Slice/customerSlice";
-
+import { createCustomer } from "../../app/Redux/Action/customerActions";
+import { Link } from "react-router-dom";
 function Registration() {
   const [formData, setFormData] = useState({
     customer_name: "",
@@ -14,7 +14,9 @@ function Registration() {
     confirmPassword: "",
   });
 
+  const [successMessage, setSuccessMessage] = useState(""); // State for success message
   const dispatch = useDispatch();
+  // eslint-disable-next-line no-unused-vars
   const navigate = useNavigate();
 
   const error = useSelector((state) => state.customer.error);
@@ -33,7 +35,9 @@ function Registration() {
     const resultAction = await dispatch(createCustomer(formData));
 
     if (createCustomer.fulfilled.match(resultAction)) {
-      navigate("/welcome");
+      setSuccessMessage("Registration successful!"); // Set success message
+      // Uncomment the line below if you want to navigate after some time
+      // setTimeout(() => navigate("/welcome"), 3000);
     } else {
       // Handle error
       console.error("Registration failed:", error);
@@ -44,12 +48,21 @@ function Registration() {
     <div className="min-h-screen bg-white flex flex-col items-center pt-6">
       <div className="w-full max-w-[600px] px-6">
         <div className="mb-6 flex justify-center">
-          <h1 className="text-2xl font-bold">Welcome to </h1>
-          <h1 className="text-2xl font-bold text-yellow-600"> Tnp</h1>
-          <h1 className="text-2xl font-bold text-blue-600">Ecom</h1>
+          <h1 className="text-2xl font-bold">Welcome to</h1>
+           
+          <Link to="/">
+            <span className=" text-2xl text-yellow-600 font-bold "> Tnp</span>
+
+            <span className=" text-2xl text-blue-600 font-bold ">Ecom</span>
+            </Link>
         </div>
         <div className="border border-gray-300 rounded-lg p-6 mb-4">
           <h1 className="text-3xl font-normal mb-4">Create account</h1>
+          {successMessage && ( // Display success message if it exists
+            <div className="mb-4 text-green-600">
+              {successMessage}
+            </div>
+          )}
           <form
             onSubmit={handleSubmit}
             className="grid grid-cols-1 gap-4 md:grid-cols-2"

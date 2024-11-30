@@ -21,14 +21,7 @@ app.use(cors({
   ],
   credentials: true,
 }));
-// app.use(
-//   session({
-//     secret: "your_secret_key",
-//     resave: false,
-//     saveUninitialized: true,
-//     cookie: { secure: false }, // Secure ko true karna hoga agar aap HTTPS use karte hain
-//   })
-// );
+
 
 app.use(cookieParser());
 app.use(express.json());

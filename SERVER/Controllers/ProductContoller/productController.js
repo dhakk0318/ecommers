@@ -1,7 +1,6 @@
 const db = require('../../Config/db');
 
-// Get all products with descriptions and subcategories
-exports.getAllProducts = (req, res) => {
+ exports.getAllProducts = (req, res) => {
     const query = `
       SELECT p.pid, p.productname, p.price, p.qty, p.company, 
              d.product_description, d.tags, d.url, d.review, 
@@ -10,7 +9,7 @@ exports.getAllProducts = (req, res) => {
       JOIN tbl_retailer_p_description d ON p.pid = d.pid
       LEFT JOIN tbl_admin_p_sub_category s ON p.sub_catid = s.sub_catid`;  // Ensured this matches the actual table/column name
 
-    console.log("Executing Query: ", query);
+    console.log(message = "successfully fetched all products");
 
     db.query(query, (error, results) => {
       if (error) {
@@ -18,7 +17,7 @@ exports.getAllProducts = (req, res) => {
         return res.status(500).json({ error: 'Database error', details: error.message });
       }
 
-      if (results.length > 0) {
+      if (results.length > 0) { 
         res.json(results);
       } else {
         res.status(404).json({ message: 'No products found' });
@@ -26,46 +25,6 @@ exports.getAllProducts = (req, res) => {
     });
 };
 
-// Create a new product with description
-// exports.createProduct = (req, res) => {
-//   const { sub_catid, retid, pid, productname, price, qty, company, product_description, tags, url, review } = req.body;
-
-//   db.beginTransaction((err) => {
-//     if (err) return res.status(500).json({ error: 'Transaction error' });
-
-//     // Insert into tbl_retailer_products
-//     const productQuery = `
-//       INSERT INTO tbl_retailer_products (sub_catid, retid, pid, productname, price, qty, company)
-//       VALUES (?, ?, ?, ?, ?, ?, ?)`;
-
-//     db.query(productQuery, [sub_catid, retid, pid, productname, price, qty, company], (error) => {
-//       if (error) {
-//         console.error("Product insert error: ", error.message);
-//         return db.rollback(() => res.status(500).json({ error: 'Product insert failed', details: error.message }));
-//       }
-
-//       // Insert into tbl_retailer_p_description
-//       const descriptionQuery = `
-//         INSERT INTO tbl_retailer_p_description (pid, product_description_id, product_description, tags, url, review)
-//         VALUES (?, ?, ?, ?, ?, ?)`;
-
-//       db.query(descriptionQuery, [pid, pid, product_description, tags, url, review], (error) => {
-//         if (error) {
-//           console.error("Description insert error: ", error.message);
-//           return db.rollback(() => res.status(500).json({ error: 'Product description insert failed', details: error.message }));
-//         }
-
-//         db.commit((err) => {
-//           if (err) {
-//             console.error("Commit failed: ", err.message);
-//             return db.rollback(() => res.status(500).json({ error: 'Commit failed', details: err.message }));
-//           }
-//           res.status(201).json({ message: 'Product created successfully' });
-//         });
-//       });
-//     });
-//   });
-// };
 
 exports.createProduct = (req, res) => {
     const { sub_catid, retid, pid, productname, price, qty, company, product_description, tags, url, review } = req.body;
